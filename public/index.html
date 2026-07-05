@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>每日热点信息推荐</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <h1>每日热点信息推荐</h1>
+          <p>Google News RSS · GDELT · Hacker News</p>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="refreshButton" class="icon-button" type="button" title="刷新数据" aria-label="刷新数据">
+          <span aria-hidden="true">↻</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="status-panel" aria-live="polite">
+        <div>
+          <span class="label">更新时间</span>
+          <strong id="updatedAt">正在加载</strong>
+        </div>
+        <div>
+          <span class="label">今日条目</span>
+          <strong id="totalCount">0</strong>
+        </div>
+        <div>
+          <span class="label">缓存状态</span>
+          <strong id="cacheState">-</strong>
+        </div>
+      </section>
+
+      <section class="push-panel">
+        <div class="push-heading">
+          <div>
+            <h2>企业微信推送</h2>
+            <p id="pushWebhook">正在读取配置</p>
+          </div>
+          <div class="push-actions">
+            <button id="pushPreviewButton" class="secondary-button" type="button">预览日报</button>
+            <button id="pushSendButton" class="primary-button" type="button">立即推送</button>
+          </div>
+        </div>
+        <div class="push-grid">
+          <div>
+            <span class="label">定时任务</span>
+            <strong id="pushScheduleState">-</strong>
+          </div>
+          <div>
+            <span class="label">下次推送</span>
+            <strong id="pushNextAt">-</strong>
+          </div>
+          <div>
+            <span class="label">最近推送</span>
+            <strong id="pushLastAt">-</strong>
+          </div>
+          <div>
+            <span class="label">推送条目</span>
+            <strong id="pushLastCount">-</strong>
+          </div>
+        </div>
+        <div id="pushResult" class="push-result hidden"></div>
+        <pre id="pushPreview" class="push-preview hidden"></pre>
+      </section>
+
+      <section class="control-row" aria-label="信息筛选">
+        <div id="categoryTabs" class="tabs" role="tablist"></div>
+        <label class="search-box">
+          <span aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="搜索标题、来源或推荐理由" />
+        </label>
+      </section>
+
+      <section id="errorBox" class="error-box hidden"></section>
+
+      <section class="content-layout">
+        <aside class="source-panel">
+          <h2>来源概览</h2>
+          <div id="sourceStats" class="source-list"></div>
+        </aside>
+
+        <section class="feed-shell">
+          <div class="feed-heading">
+            <div>
+              <h2 id="feedTitle">全部热点</h2>
+              <p id="feedSubtitle">按热度、时效和多源信号排序</p>
+            </div>
+            <span id="visibleCount" class="count-pill">0 条</span>
+          </div>
+
+          <div id="loadingState" class="loading-state">
+            <span class="spinner" aria-hidden="true"></span>
+            <span>正在聚合今日热点</span>
+          </div>
+          <div id="newsList" class="news-list"></div>
+          <div id="emptyState" class="empty-state hidden">
+            <strong>没有匹配的热点</strong>
+            <span>换个分类或搜索词试试。</span>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "daily-hotspot-recommender",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Daily hotspot information recommender powered by Google News RSS, GDELT, and Hacker News.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "CACHE_TTL_MINUTES=15 node server.js",
+    "push:once": "node scripts/push-wecom.js --refresh",
+    "push:dry-run": "node scripts/push-wecom.js --dry-run --no-refresh",
+    "push:schedule": "node scripts/push-wecom.js --schedule",
+    "push:install-macos": "node scripts/install-macos-launchd.js",
+    "push:uninstall-macos": "node scripts/install-macos-launchd.js --uninstall"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

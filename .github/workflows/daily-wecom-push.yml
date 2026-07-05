@@ -1,0 +1,69 @@
+name: Daily WeCom Push
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "30 8 * * *"
+      timezone: "Asia/Shanghai"
+
+concurrency:
+  group: daily-wecom-push-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  push:
+    name: Push daily hotspot report
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      WECOM_WEBHOOK_URL: ${{ secrets.WECOM_WEBHOOK_URL }}
+      PUSH_TIME: "08:30"
+      PUSH_TOP_PER_CATEGORY: "3"
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Compute Shanghai push date
+        id: push-date
+        run: echo "date=$(TZ=Asia/Shanghai date +%F)" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare data directory
+        run: mkdir -p data
+
+      - name: Restore daily push log
+        id: push-log-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: data/push-log.json
+          key: wecom-push-log-${{ steps.push-date.outputs.date }}
+
+      - name: Check required secret
+        run: |
+          if [ -z "$WECOM_WEBHOOK_URL" ]; then
+            echo "::error::Missing repository secret WECOM_WEBHOOK_URL."
+            exit 1
+          fi
+
+      - name: Check script syntax
+        run: |
+          node --check server.js
+          node --check scripts/push-wecom.js
+
+      - name: Push report to WeCom
+        run: npm run push:once
+
+      - name: Save daily push log
+        if: success() && steps.push-log-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: data/push-log.json
+          key: wecom-push-log-${{ steps.push-date.outputs.date }}
