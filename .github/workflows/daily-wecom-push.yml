@@ -3,8 +3,8 @@ name: Daily WeCom Push
 on:
   workflow_dispatch:
   schedule:
-    - cron: "30 8 * * *"
-      timezone: "Asia/Shanghai"
+    # 08:30 Asia/Shanghai = 00:30 UTC.
+    - cron: "30 0 * * *"
 
 concurrency:
   group: daily-wecom-push-${{ github.ref }}

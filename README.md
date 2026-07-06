@@ -83,7 +83,7 @@ node scripts/push-wecom.js --refresh --force
 .github/workflows/daily-wecom-push.yml
 ```
 
-这个 workflow 会每天 `08:30` 按 `Asia/Shanghai` 时区运行一次，也支持在 GitHub 的 Actions 页面手动运行。
+这个 workflow 会每天北京时间 `08:30` 运行一次。GitHub Actions 的 cron 使用 UTC 写法，配置为 `30 0 * * *`，对应北京时间 `08:30`；也支持在 GitHub 的 Actions 页面手动运行。
 
 在 GitHub 仓库中添加企业微信机器人地址：
 
